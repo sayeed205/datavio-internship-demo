@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
 import morgan from 'morgan';
 
+import { connectDB } from './config';
 import { errorHandler } from './middleware';
 import { authRouter } from './routes';
 
@@ -23,6 +24,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+    await connectDB();
     console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
 });
