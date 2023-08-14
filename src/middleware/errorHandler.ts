@@ -25,7 +25,7 @@ export const errorHandler = (
         error = new ErrorResponse(message, 401);
     }
     return res.status(error.statusCode || 500).json({
-        success: false,
+        ok: false,
         error: error.message || 'Server Error',
     });
 };
