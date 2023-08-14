@@ -9,7 +9,6 @@ export const errorHandler = (
 ) => {
     let error = { ...err };
     error.message = err.message;
-    // error.errors = err.errors;
 
     if (err.name === 'CastError') {
         const message = `Resource not found`;

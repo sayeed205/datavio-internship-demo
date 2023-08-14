@@ -1,11 +1,11 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import morgan from 'morgan';
 
 import { connectDB } from './config';
 import { errorHandler } from './middleware';
-import { authRouter } from './routes';
+import { authRouter, flipkartRouter } from './routes';
 
 dotenv.config();
 
@@ -16,10 +16,7 @@ app.use(morgan('dev'));
 app.use(cors());
 
 app.use('/api/auth', authRouter);
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('Express + TypeScript Server');
-});
+app.use('/api/flipkart', flipkartRouter);
 
 app.use(errorHandler);
 
