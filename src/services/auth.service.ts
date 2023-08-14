@@ -17,5 +17,15 @@ export const signup = async (body: authBody) => {
     return { ok: true, token };
 };
 export const login = async (body: authBody) => {
-    return { ok: true, token: 'token' };
+    const { email, password } = body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new ErrorResponse('Invalid credentials', 401);
+    }
+    if (!(await user.isPasswordMatch(password))) {
+        throw new ErrorResponse('Invalid credentials', 401);
+    }
+    const token = user.generateToken();
+    return { ok: true, token };
 };

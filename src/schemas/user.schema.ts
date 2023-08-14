@@ -30,6 +30,9 @@ const userSchema = new mongoose.Schema(
                 );
                 return token;
             },
+            isPasswordMatch: async function (password: string) {
+                return await bcrypt.compare(password, this.password!);
+            },
         },
         timestamps: true,
     }
