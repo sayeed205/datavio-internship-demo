@@ -1,0 +1,31 @@
+import { NextFunction, Request, Response } from 'express';
+import { ErrorResponse } from '../utils';
+
+export const errorHandler = (
+    err: ErrorResponse,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    let error = { ...err };
+    error.message = err.message;
+    // error.errors = err.errors;
+
+    if (err.name === 'CastError') {
+        const message = `Resource not found`;
+        error = new ErrorResponse(message, 404);
+    } else if (err.name === 'MongoError') {
+        const message = `Duplicate field value entered`;
+        error = new ErrorResponse(message, 400);
+    } else if (err.name === 'TypeError') {
+        const message = `An unknown error occurred while processing your request. Please try again later.`;
+        error = new ErrorResponse(message);
+    } else if (err.name === 'JsonWebTokenError') {
+        const message = `Invalid token or Token expired. Please log in again.`;
+        error = new ErrorResponse(message, 401);
+    }
+    return res.status(error.statusCode || 500).json({
+        success: false,
+        error: error.message || 'Server Error',
+    });
+};
