@@ -1,10 +1,15 @@
 import { Router } from 'express';
-import { AuthRequest, auth } from '../middleware';
+import { flipkartController } from '../controllers';
+import { auth, validate } from '../middleware';
+import { asyncHandler } from '../utils';
+import { flipkartValidation } from '../validations';
 const router = Router();
 
-router.post('/', auth, (req: AuthRequest, res) => {
-    console.log(req.user);
-    res.json({ message: 'Flipkart' });
-});
+router.post(
+    '/',
+    auth,
+    validate(flipkartValidation.scrape),
+    asyncHandler(flipkartController.scrape)
+);
 
 export const flipkartRouter = router;

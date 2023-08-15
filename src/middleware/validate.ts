@@ -14,8 +14,6 @@ export const validate =
             return next();
         } catch (error: unknown) {
             if (error instanceof ZodError) {
-                console.log(error.issues);
-
                 const errors = error.issues
                     .map(issue => {
                         const { message } = issue;

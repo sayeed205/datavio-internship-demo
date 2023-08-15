@@ -22,6 +22,9 @@ export const errorHandler = (
     } else if (err.name === 'JsonWebTokenError') {
         const message = `Invalid token or Token expired. Please log in again.`;
         error = new ErrorResponse(message, 401);
+    } else if (err.name === 'ValidationError') {
+        const message = 'mongoose validation error';
+        error = new ErrorResponse(message, 400);
     }
     return res.status(error.statusCode || 500).json({
         ok: false,
